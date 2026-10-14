@@ -46,6 +46,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;line-height:1.5}
 <textarea id="instructions" rows="6" placeholder="Directions" required></textarea>
 <input id="link" type="url" placeholder="Recipe video or website link (optional)">
 <input id="photo" type="file" accept="image/*">
+<button type="button" onclick="pasteRecipeLink()">📋 Paste Recipe Link</button>
 <button type="submit">Save Recipe ♡</button>
 </form>
 </main>
@@ -131,7 +132,15 @@ function editRecipe(recipeName) {
   render();
   document.getElementById("form").scrollIntoView();
 }
-  
+async function pasteRecipeLink() {
+  try {
+    const link = await navigator.clipboard.readText();
+    document.getElementById("link").value = link;
+    alert("Recipe link pasted!");
+  } catch (error) {
+    alert("Please paste your link into the link box.");
+  }
+}
 </script>
 </body>
 </html>
