@@ -70,6 +70,11 @@ let ing=document.createElement("pre");ing.textContent=r.ingredients;card.append(
 let b=document.createElement("h4");b.textContent="Directions";card.append(b);
 let directions=document.createElement("pre");directions.textContent=r.instructions;card.append(directions);
 if(r.link){let link=document.createElement("a");link.href=r.link;link.textContent="Open recipe video or website";link.target="_blank";link.rel="noopener noreferrer";card.append(link)}
+let deleteButton = document.createElement("button");
+deleteButton.textContent = "Delete Recipe 🗑️";
+deleteButton.type = "button";
+deleteButton.onclick = () => deleteRecipe(r.name);
+card.append(deleteButton);
 area.append(card);
 });
 }
@@ -86,6 +91,15 @@ save();e.target.reset();selected="All";render();
 alert("Recipe saved!");
 });
 render();
+function deleteRecipe(recipeName) {
+  const index = recipes.findIndex(r => r.name === recipeName);
+  if (index === -1) return;
+  if (confirm("Delete this recipe?")) {
+    recipes.splice(index, 1);
+    save();
+    render();
+  }
+}
 </script>
 </body>
 </html>
