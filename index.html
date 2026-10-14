@@ -85,6 +85,9 @@ area.append(card);
 }
 document.getElementById("form").addEventListener("submit",e=>{
 e.preventDefault();
+const recipeName = document.getElementById("name").value;
+const existingIndex = recipes.findIndex(r => r.name === recipeName);
+if (existingIndex !== -1) recipes.splice(existingIndex, 1);
 recipes.unshift({
 name:document.getElementById("name").value,
 category:document.getElementById("category").value,
