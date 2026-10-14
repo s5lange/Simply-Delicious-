@@ -45,6 +45,7 @@ pre{white-space:pre-wrap;font-family:Arial,sans-serif;line-height:1.5}
 <textarea id="ingredients" rows="5" placeholder="Ingredients" required></textarea>
 <textarea id="instructions" rows="6" placeholder="Directions" required></textarea>
 <input id="link" type="url" placeholder="Recipe video or website link (optional)">
+<input id="photo" type="file" accept="image/*">
 <button type="submit">Save Recipe ♡</button>
 </form>
 </main>
@@ -64,6 +65,7 @@ if(!filtered.length)area.textContent="No recipes here yet. Add your first one be
 filtered.forEach(r=>{
 let card=document.createElement("article");card.className="card";
 let h=document.createElement("h3");h.textContent=r.name;card.append(h);
+if(r.photo){const img=document.createElement("img");img.src=r.photo;img.style.cssText="width:100%;height:auto;border-radius:12px;margin:12px 0";card.append(img);}
 let small=document.createElement("small");small.textContent=r.category;card.append(small);
 let a=document.createElement("h4");a.textContent="Ingredients";card.append(a);
 let ing=document.createElement("pre");ing.textContent=r.ingredients;card.append(ing);
@@ -83,17 +85,21 @@ card.append(deleteButton);
 area.append(card);
 });
 }
-document.getElementById("form").addEventListener("submit",e=>{
+document.getElementById("form").addEventListener("submit",async e=>{
+  const photoFile = document.getElementById("photo").files[0];
+  const photoData = photoFile ? await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(photoFile); }) : "";
 e.preventDefault();
 const recipeName = document.getElementById("name").value;
 const existingIndex = recipes.findIndex(r => r.name === recipeName);
+const oldPhoto = existingIndex !== -1 ? recipes[existingIndex].photo : "";
 if (existingIndex !== -1) recipes.splice(existingIndex, 1);
 recipes.unshift({
 name:document.getElementById("name").value,
 category:document.getElementById("category").value,
 ingredients:document.getElementById("ingredients").value,
 instructions:document.getElementById("instructions").value,
-link:document.getElementById("link").value
+link:document.getElementById("link").value,
+photo: photoData || oldPhoto
 });
 save();e.target.reset();selected="All";render();
 alert("Recipe saved!");
