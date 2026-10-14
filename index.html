@@ -70,6 +70,11 @@ let ing=document.createElement("pre");ing.textContent=r.ingredients;card.append(
 let b=document.createElement("h4");b.textContent="Directions";card.append(b);
 let directions=document.createElement("pre");directions.textContent=r.instructions;card.append(directions);
 if(r.link){let link=document.createElement("a");link.href=r.link;link.textContent="Open recipe video or website";link.target="_blank";link.rel="noopener noreferrer";card.append(link)}
+let editButton = document.createElement("button");
+editButton.textContent = "✏️ Edit Recipe";
+editButton.type = "button";
+editButton.onclick = () => editRecipe(r.name);
+card.append(editButton);
 let deleteButton = document.createElement("button");
 deleteButton.textContent = "Delete Recipe 🗑️";
 deleteButton.type = "button";
@@ -100,6 +105,24 @@ function deleteRecipe(recipeName) {
     render();
   }
 }
+
+function editRecipe(recipeName) {
+  const index = recipes.findIndex(r => r.name === recipeName);
+  if (index === -1) return;
+
+  const recipe = recipes[index];
+  document.getElementById("name").value = recipe.name;
+  document.getElementById("category").value = recipe.category;
+  document.getElementById("ingredients").value = recipe.ingredients;
+  document.getElementById("instructions").value = recipe.instructions;
+  document.getElementById("link").value = recipe.link || "";
+
+  
+  save();
+  render();
+  document.getElementById("form").scrollIntoView();
+}
+  
 </script>
 </body>
 </html>
