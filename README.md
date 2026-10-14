@@ -1,2 +1,2 @@
 # Simply-Delicious-
-Recipes I have saved over the years.  
+My favorite recipes, all in one place 💚
